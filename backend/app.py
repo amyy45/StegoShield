@@ -1,11 +1,12 @@
 import psycopg2
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 import torch
 from waitress import serve
-from backend.model import load_model, predict
+import os
+from model import load_model, predict
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder="../frontend/dist", static_url_path="/")
 CORS(app)
 
 conn = psycopg2.connect(
@@ -19,14 +20,15 @@ cursor = conn.cursor()
 
 model = load_model()
 
-@app.route('/')
-def home():
-    return "StegoShield API is running!"
+@app.route("/")
+def serve_react():
+    return send_from_directory(app.static_folder, "index.html")
 
 @app.route('/predict', methods=['POST', 'GET'])
 def detect():
     if request.method == 'GET':
         return "StegoShield API is running! Use POST request to analyze files."
+    
     file = request.files['file']
     result, confidence = predict(file, model)
 
