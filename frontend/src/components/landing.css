@@ -1,0 +1,14 @@
+/* src/custom.css */
+@media (min-width: 1536px) {
+    .custom-container {
+      max-width: 90%;
+      margin-left: auto;
+      margin-right: auto;
+    }
+  
+    .custom-padding {
+      padding-left: 2rem;
+      padding-right: 2rem;
+    }
+  }
+  
