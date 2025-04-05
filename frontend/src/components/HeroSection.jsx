@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import logo from "../assets/logo.png";
 
 const HeroSection = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -22,7 +23,7 @@ const HeroSection = () => {
     <div className="flex items-center justify-between py-5 md:block">
       <a href="#">
         <img
-          src="/logo.png"
+          src={logo}
           width={120}
           height={50}
           alt="StegoShield logo"
