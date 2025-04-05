@@ -1,55 +1,50 @@
-import React from "react";
+import React from 'react';
 
 const Contact = () => {
     return (
-        <section className="bg-white py-16 px-6 sm:px-12 md:px-24">
-            <div className="max-w-4xl mx-auto text-center">
-                <h2 className="text-3xl font-extrabold text-gray-800 mb-6">Contact Us</h2>
-                <p className="text-gray-600 mb-12 text-justify">
-                    Have questions, suggestions, or just want to say hi? We'd love to hear from you!
-                    Fill out the form below and we’ll get back to you as soon as possible.
-                </p>
-            </div>
+        <div className="py-20 px-6 md:px-20 bg-gray-50 text-gray-800">
+            <h2 className="text-4xl font-extrabold text-center mb-6">Contact Us</h2>
+            <p className="max-w-4xl mx-auto text-lg text-justify leading-relaxed mb-10">
+                We’re here to help! Whether you have a question about our services, need assistance with a file upload, or want to provide feedback, our team is ready to assist you.
+                Have questions, suggestions, or just want to say hi? We'd love to hear from you! Fill out the form below and we’ll get back to you as soon as possible.
+            </p>
 
-            <form className="max-w-3xl mx-auto bg-gray-50 p-8 rounded-xl shadow-md space-y-6">
+            <form className="max-w-2xl mx-auto bg-white p-10 rounded-2xl shadow-lg space-y-6">
                 <div>
-                    <label className="block text-left text-sm font-medium text-gray-700 mb-1">Name</label>
+                    <label className="block text-sm font-medium mb-1" htmlFor="name">Name</label>
                     <input
+                        id="name"
                         type="text"
-                        placeholder="Your Name"
-                        className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-gray-400"
-                        required
+                        placeholder="Your name"
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
                 </div>
                 <div>
-                    <label className="block text-left text-sm font-medium text-gray-700 mb-1">Email</label>
+                    <label className="block text-sm font-medium mb-1" htmlFor="email">Email</label>
                     <input
+                        id="email"
                         type="email"
                         placeholder="you@example.com"
-                        className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-gray-400"
-                        required
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
                 </div>
                 <div>
-                    <label className="block text-left text-sm font-medium text-gray-700 mb-1">Message</label>
+                    <label className="block text-sm font-medium mb-1" htmlFor="message">Message</label>
                     <textarea
+                        id="message"
                         rows="5"
-                        placeholder="Your message..."
-                        className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-gray-400"
-                        required
+                        placeholder="Write your message..."
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                     ></textarea>
                 </div>
-                <div className="text-center">
-                    <button
-                        type="submit"
-                        className="px-6 py-2 text-white bg-gray-800 hover:bg-gray-700 rounded-full text-sm"
-                    >
-                        Send Message
-                    </button>
-                </div>
+                <button
+                    type="submit"
+                    className="px-6 py-2 text-white bg-gray-800 hover:bg-gray-700 rounded-full text-sm block mx-auto"
+                >
+                    Send Message
+                </button>
             </form>
-
-        </section>
+        </div>
     );
 };
 

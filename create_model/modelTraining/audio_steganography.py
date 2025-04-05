@@ -20,7 +20,7 @@ warnings.filterwarnings("ignore", category=UserWarning, module='librosa')
 dataset_path = "dataset_prep/dataset/split_data/split_audio"
 train_path = os.path.join(dataset_path, "train")
 val_path = os.path.join(dataset_path, "val")
-save_model_path = os.path.join(os.getcwd(), "backend/models/best_audio_model.pth")
+save_model_path = os.path.join(os.getcwd(), "backend/models/b_audio_model.pth")
 
 # Function to convert waveform to spectrogram
 def waveform_to_spectrogram(waveform, sr=22050, n_mels=128, target_shape=(128, 300)):
@@ -99,9 +99,9 @@ class ResNet34Audio(nn.Module):
         self.resnet34 = models.resnet34(weights=models.ResNet34_Weights.DEFAULT)
         self.resnet34.conv1 = nn.Conv2d(1, 64, kernel_size=7, stride=2, padding=3, bias=False)  # For 1-channel input
 
-        # Freeze fewer layers for more learning capacity
+        # Freeze only initial conv and bn layers
         for name, param in self.resnet34.named_parameters():
-            if "layer2" not in name and "layer3" not in name and "layer4" not in name and "fc" not in name:
+            if "conv1" in name or "bn1" in name:
                 param.requires_grad = False
 
         num_ftrs = self.resnet34.fc.in_features
@@ -111,14 +111,14 @@ class ResNet34Audio(nn.Module):
         return self.resnet34(x)
 
 # Train Function with Model Accuracy Calculation
-def train(model, train_loader, val_loader, epochs=50, lr=0.0003, weight_decay=1e-4):
+def train(model, train_loader, val_loader, epochs=75, lr=0.0003, weight_decay=1e-4):
     model.to(device)
     criterion = nn.CrossEntropyLoss()
     optimizer = optim.AdamW(filter(lambda p: p.requires_grad, model.parameters()), lr=lr, weight_decay=weight_decay)
-    scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='min', patience=2, factor=0.5)
+    scheduler = optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=epochs)
 
     best_acc = 0
-    patience = 10
+    patience = 15
     counter = 0
 
     for epoch in range(epochs):
@@ -149,7 +149,7 @@ def train(model, train_loader, val_loader, epochs=50, lr=0.0003, weight_decay=1e
                 total += labels.size(0)
 
         accuracy = 100 * correct / total
-        scheduler.step(avg_train_loss)
+        scheduler.step()
 
         print(f"📘 Epoch {epoch+1}/{epochs} - Train Loss: {avg_train_loss:.4f}, Val Accuracy: {accuracy:.2f}%")
 
@@ -172,8 +172,8 @@ if __name__ == "__main__":
     train_dataset = AudioDataset(train_path)
     val_dataset = AudioDataset(val_path)
 
-    train_loader = DataLoader(train_dataset, batch_size=32, shuffle=True)
-    val_loader = DataLoader(val_dataset, batch_size=32, shuffle=False)
+    train_loader = DataLoader(train_dataset, batch_size=16, shuffle=True)
+    val_loader = DataLoader(val_dataset, batch_size=16, shuffle=False)
 
     print(f"Training samples: {len(train_dataset)}, Validation samples: {len(val_dataset)}")
 
